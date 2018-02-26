@@ -5,12 +5,14 @@ import android.Manifest;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int REQUEST_LOCATION_CODE = 99;
     int PROXIMITY_RADIUS = 10000;
     double latitude,longitude;
+    float pastbatterielevel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, ifilter);
+
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        float batteryPct = level / (float)scale;
+
+        pastbatterielevel = (batteryPct*100);
     }
 
 
@@ -127,8 +140,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
 
-        double nLatitude;
-        double nLongitude;
+
+
+        final double[] nLatitude = new double[1];
+        final double[] nLongitude = new double[1];
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         lastlocation = location;
@@ -155,11 +170,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             int n = 0;
             n = randInt(0,10);
             if(n>5) a = -0.005;
-            nLatitude = new Random().nextDouble()*a;
-            nLongitude = new Random().nextDouble()*a;;
+            nLatitude[0] = new Random().nextDouble()*a;
+            nLongitude[0] = new Random().nextDouble()*a;;
             Marker marker = mMap
                     .addMarker(new MarkerOptions()
-                            .position(new LatLng(latitude + nLatitude, longitude + nLongitude))
+                            .position(new LatLng(latitude + nLatitude[0], longitude + nLongitude[0]))
                             .title("Wifi network " + Integer.toString(i+1)));
             markers.add(marker);
         }
@@ -191,6 +206,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         sb.append("[NONE]");
                     else sb.append(wifiList.get(finalI).capabilities).append("\n");
                     intent.putExtra("WifiIntent",sb.toString());
+                    double a = 0.005;
+                    int n = 0;
+                    n = randInt(0,10);
+                    if(n>5) a = -0.005;
+                    nLatitude[0] = new Random().nextDouble()*a;
+                    nLongitude[0] = new Random().nextDouble()*a;
+                    double MarkerLatitude = latitude + nLatitude[0];
+                    double MarkerLongitude = longitude + nLongitude[0];
+                    intent.putExtra("MarkerLocation",Double.toString(MarkerLatitude) + "  " + Double.toString(MarkerLongitude));
+                    intent.putExtra("CurrentLocation", Double.toString(latitude)+ "  " + Double.toString(longitude));
+                    intent.putExtra("PastBatterieLevel", Float.toString(pastbatterielevel));
                     startActivity(intent);
                     return true;
                 }
