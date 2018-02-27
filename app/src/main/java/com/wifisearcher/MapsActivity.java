@@ -173,14 +173,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(n>5) a = -0.005;
             nLatitude[0] = new Random().nextDouble()*a;
             nLongitude[0] = new Random().nextDouble()*a;
-            if (!(wifiList.get(i).capabilities.contains("WPA2"))&&!(wifiList.get(i).capabilities.contains("WPA"))&&!(wifiList.get(i).capabilities.contains("WEP"))){
+            if (!(wifiList.get(i).capabilities.contains("WPA2"))&!(wifiList.get(i).capabilities.contains("WPA"))&!(wifiList.get(i).capabilities.contains("WEP"))&!(wifiList.get(i).capabilities.contains("PSK"))&!(wifiList.get(i).capabilities.contains("EAP"))){
                 bitmapDescriptor
                         = BitmapDescriptorFactory.defaultMarker(
                         BitmapDescriptorFactory.HUE_GREEN);
             } else {
                 bitmapDescriptor
                         = BitmapDescriptorFactory.defaultMarker(
-                        BitmapDescriptorFactory.HUE_CYAN);
+                        BitmapDescriptorFactory.HUE_RED);
             }
             Marker marker = mMap
                     .addMarker(new MarkerOptions()

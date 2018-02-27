@@ -14,9 +14,10 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import static android.content.Intent.EXTRA_TEXT;
+
 public class NavActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
     private String WifiKey;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -30,12 +31,15 @@ public class NavActivity extends AppCompatActivity {
                     share.setType("text/plain");
                     share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                     share.putExtra(Intent.EXTRA_SUBJECT, "None");
-                    share.putExtra(Intent.EXTRA_TEXT, WifiKey.toString());
+                    share.putExtra(EXTRA_TEXT, WifiKey.toString());
 
                     startActivity(Intent.createChooser(share, "Super access point!"));
                     Toast.makeText(getApplicationContext(), "Partage en cours", Toast.LENGTH_LONG).show();
                     return true;
                 case R.id.navigation_favorite:
+                    Intent fav = new Intent(getApplicationContext(), FavouriteActivity.class);
+                    fav.putExtra("WifiNew", WifiKey.toString());
+                    startActivity(fav);
 
                     Toast.makeText(getApplicationContext(), "Favourite", Toast.LENGTH_LONG).show();
                     return true;

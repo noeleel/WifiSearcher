@@ -47,6 +47,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.wifisearcher.MapsActivity" />
         </activity>
+        <activity
+            android:name=".FavouriteActivity"
+            android:label="@string/title_activity_favourite"
+            android:parentActivityName=".NavActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.wifisearcher.NavActivity" />
+        </activity>
     </application>
 
 </manifest>
