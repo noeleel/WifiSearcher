@@ -35,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -141,7 +142,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {
 
 
-
+        BitmapDescriptor bitmapDescriptor;
         final double[] nLatitude = new double[1];
         final double[] nLongitude = new double[1];
         latitude = location.getLatitude();
@@ -171,11 +172,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             n = randInt(0,10);
             if(n>5) a = -0.005;
             nLatitude[0] = new Random().nextDouble()*a;
-            nLongitude[0] = new Random().nextDouble()*a;;
+            nLongitude[0] = new Random().nextDouble()*a;
+            if (!(wifiList.get(i).capabilities.contains("WPA2"))&&!(wifiList.get(i).capabilities.contains("WPA"))&&!(wifiList.get(i).capabilities.contains("WEP"))){
+                bitmapDescriptor
+                        = BitmapDescriptorFactory.defaultMarker(
+                        BitmapDescriptorFactory.HUE_GREEN);
+            } else {
+                bitmapDescriptor
+                        = BitmapDescriptorFactory.defaultMarker(
+                        BitmapDescriptorFactory.HUE_CYAN);
+            }
             Marker marker = mMap
                     .addMarker(new MarkerOptions()
                             .position(new LatLng(latitude + nLatitude[0], longitude + nLongitude[0]))
-                            .title("Wifi network " + Integer.toString(i+1)));
+                            .title("Wifi network " + Integer.toString(i+1))
+                            .icon(bitmapDescriptor));
             markers.add(marker);
         }
         markers.size();
