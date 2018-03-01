@@ -31,8 +31,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".App2Activity"
-            android:label="@string/app_name"
+            android:name=".WifiScannerActivity"
+            android:label="Points d'accès"
             android:parentActivityName=".MapsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -48,13 +48,13 @@
                 android:value="com.wifisearcher.MapsActivity" />
         </activity>
         <activity
-            android:name=".FavouriteActivity"
-            android:label="@string/title_activity_favourite"
-            android:parentActivityName=".NavActivity"
+            android:name=".FavoritesActivity"
+            android:label="Favoris"
+            android:parentActivityName=".MapsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.wifisearcher.NavActivity" />
+                android:value="com.wifisearcher.MapsActivity" />
         </activity>
     </application>
 
